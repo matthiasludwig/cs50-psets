@@ -1,0 +1,20 @@
+1.  stint.h includes several int data types to ensure compatibility across different systems.
+    - It includes exact-width integer types with exact N bytes across all systems
+    - Least-width integer types with at least N bytes across all systems
+    - Fastes integer types with at least N bytes across all systems. It is the fastest implementation.
+    - Maximum-width integer types which is guaranteed to be the biggest integer.
+    - Pointer that can hold any type of
+2.  It creates an unsigned int of exact 8, 16 and 32 bits. And an int of exact 16 bits.
+3.  BYTE: 1 byte / 8 bits
+    DWORD: 4 bytes / 32 bits
+    LONG: 4 bytes / 32 bits
+    WORD: 2 bytes / 16 bits
+4.  The first two bytes of an bitmap are x424d (in ASCII 'BM')
+5.  biSize includes the picture width and height with padding. the bfSize includes the BITMAPINFOHEADER and the BITMAPFILEHEADER (= total size of the file)
+6.  That would indicate that the BMP is top-down. That the pixels start with the upper left corner and go to the bottom right corner
+7.  biBitCount indicates the Bits per pixel
+8.  The file could not exist (read), can not be created (write) and/or the permission to use the files is not given
+9.  Because we read the bytes into our structs one by one
+10. It results in a padding of 3
+11. fseek checks the read in values for a specific value (here the padding)
+12. SEEK_CUR means it is compared with the current location in the file. Opposite to SEEK_SET or SEEK_END with would search at the beginning/end of the file.

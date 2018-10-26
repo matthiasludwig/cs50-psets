@@ -1,0 +1,4 @@
+0. The game board has to be between 4 and 9 (both inclusive) as per variables DIM_MIN and DIM_MAX.
+1. The board is an array which is stored in a file called log.txt.
+2. The function void greet(void) is called to start the game and greet the player.
+3. I need to implement init(), draw(), move() and won().
