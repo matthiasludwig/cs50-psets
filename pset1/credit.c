@@ -1,90 +1,90 @@
+// Check credit card numbers and output the issuer or validity
 #include <cs50.h>
 #include <stdio.h>
 
-int sumUp(int startingPoint, int multiplier, int cclength, int arr[]);
-bool checkSum(int sum);
-string checkIssuer(int arr[], int cclength);
+long get_Input(string prompt);
+bool check_Validity(long number);
+void check_Issuer(long number);
 
+int main(void)
+{
+    long number = get_Input("Number: ");
 
-int main(void) {
-    bool done = false;
-    bool valid;
-    int numbers[16];
-    int cclength = 0;
-    string Issuer;
-    
-    int firstSum = 0;
-    int secondSum = 0;
-    
-    long long creditnumber;
-
-    // Check Input
-    do {
-        printf("Number: ");
-        creditnumber = get_long_long();
+    bool valid = check_Validity(number);
+    if (valid)
+    {
+        check_Issuer(number);
     }
-    while(creditnumber <= 0);
-    
-    // Test number: 344242243310003
-    while (!done) {
-       int temp = creditnumber % 10;
-       creditnumber /= 10;
-       numbers[cclength] = temp;
-       cclength++;
-       if (creditnumber == 0) {
-            done = true;
-        }
-    }
-    
-    // Checks
-    firstSum = sumUp(1, 2, cclength, numbers);
-    secondSum = sumUp(0, 1, cclength, numbers);
-    
-    Issuer = checkIssuer(numbers, cclength);
-    valid = checkSum(firstSum + secondSum);
-    
-    if (valid) {
-        printf("%s\n", Issuer);
-    }
-    else {
+    else
+    {
         printf("INVALID\n");
     }
-}
-    
 
-int sumUp(int startingPoint, int multiplier, int cclength, int arr[]) {
+    return 0;
+}
+
+long get_Input(string prompt)
+{
+    long number = 0;
+    // repeat until requirements from while part are satisfied
+    do
+    {
+        number = get_long("%s", prompt);
+    }
+    while (number <= 0); // check if input is positive
+    return number;
+}
+
+bool check_Validity(long number)
+{
+    bool valid = false;
     int sum = 0;
-    while(startingPoint < cclength) {
-        int temp = (((arr[startingPoint]) % 10) * multiplier);
-        if (!((temp / 10) == 0)) {
-            temp = (temp % 10) + (temp / 10);
+    int i = 1;
+    while (number > 0)
+    {
+        int ending = number % 10;  // Get the last digit of the number
+
+        // Multiply every second digit by 2
+        if (i % 2 == 0)
+        {
+            ending *= 2;
+            ending = (ending > 9) ? ((ending % 10) + ((ending / 10)) % 10) : ending;
         }
-        sum += temp;
-        startingPoint += 2;
+        // Add up the ending to the sum
+        sum += ending;
+        i++;  // Iterate the loop
+        number /= 10;  // Cut off the last digit of the number
     }
-    return sum;
+
+    if (sum % 10 == 0 && (number / (10000000000000000) == 0))
+    {
+        valid = true;
+    }
+
+    return valid;
 }
 
-bool checkSum(int sum) {
-    if ((sum % 10) == 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+void check_Issuer(long number)
+{
+    int sixteen = number / (1000000000000000);
+    int fifteen = number / (100000000000000);
+    int fourteen = number / (10000000000000);
+    int thirteen = number / (1000000000000);
 
-string checkIssuer(int arr[], int cclength) {
-    if (arr[cclength -1] == 4) {
-        return "VISA";
+    if (sixteen == 4 || thirteen == 4)
+    {
+        printf("VISA\n");
     }
-    else if (arr[cclength -1] == 5 && (arr[cclength -2] == 1 || arr[cclength -2] == 2 || arr[cclength -2] == 3 || arr[cclength -2] == 4 || arr[cclength -2] == 5)) {
-        return "MASTERCARD";
+    if (fifteen >= 51 && fifteen <= 55)
+    {
+        printf("MASTERCARD\n");
     }
-    else if (arr[cclength -1] == 3 && (arr[cclength -2] == 4 || arr[cclength -2] == 7)) {
-        return "AMEX";
+    if (fourteen == 34 || fourteen == 37)
+    {
+        printf("AMEX\n");
     }
-    else {
-        return "INVALID";
+    else
+    {
+        printf("INVALID\n");
     }
 }
