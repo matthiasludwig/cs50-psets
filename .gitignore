@@ -1,1 +1,2 @@
-idea/*
+# Ignore Clion files
+.idea/
